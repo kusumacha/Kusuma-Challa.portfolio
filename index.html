@@ -1,224 +1,266 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Kusuma Challa · Data Science & Machine Learning</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-  <!-- Skill icons (Devicon) -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.15.1/devicon.min.css">
-  <style>
-    /* --- same styling as Shivani's template --- */
-    :root{
-      --bg1: #070a1a; --bg2: #0d0f24; --card: #111633; --ink: #f6fbff;
-      --muted: #b7c4de; --c1: #7c3aed; --c2: #2563eb; --c3: #06b6d4;
-      --c4: #22c55e; --c5: #f59e0b; --c6: #ef4444; --pill: #18224d; --border: #243167;
-    }
-    *{box-sizing:border-box}
-    html,body{margin:0;padding:0;background:linear-gradient(120deg,var(--bg1),var(--bg2));
-      color:var(--ink);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,sans-serif;}
-    body:before{content:"";position:fixed;inset:-20%;pointer-events:none;filter:blur(110px) saturate(140%);
-      background:radial-gradient(40% 35% at 20% 30%, rgba(124,58,237,.25), transparent 60%),
-                 radial-gradient(40% 35% at 80% 20%, rgba(37,99,235,.25), transparent 60%),
-                 radial-gradient(40% 35% at 70% 80%, rgba(6,182,212,.22), transparent 60%),
-                 radial-gradient(40% 35% at 25% 85%, rgba(245,158,11,.18), transparent 60%);
-      z-index:-1;animation: floatGlow 18s ease-in-out infinite alternate;}
-    @keyframes floatGlow{from{transform:translateY(-2%)}to{transform:translateY(2%)}}
-    a{color:var(--ink);text-decoration:none} a:hover{opacity:.9;text-decoration:underline}
-    .container{max-width:1080px;margin:0 auto;padding:32px 20px 80px}
-    header{display:grid;grid-template-columns:140px 1fr;gap:24px;align-items:center;margin-top:8px}
-    .avatar{width:140px;height:140px;border-radius:22px;object-fit:cover;border:2px solid var(--border);background:#0e1627;box-shadow:0 10px 30px rgba(0,0,0,.25)}
-    h1{font-size:48px;line-height:1.05;margin:0 0 6px;font-weight:900;letter-spacing:-0.02em;
-       background:linear-gradient(90deg,var(--c1),var(--c2),var(--c3),var(--c4),var(--c5),var(--c6));
-       -webkit-background-clip:text;background-clip:text;color:transparent}
-    .subtitle{font-size:18px;color:var(--muted);margin-top:6px}
-    .contact{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
-    .chip{display:inline-flex;align-items:center;gap:8px;background:linear-gradient(90deg,#1a234e,#121a3b);
-          border:1px solid var(--border);padding:8px 12px;border-radius:999px;font-size:14px;color:var(--ink);
-          box-shadow:0 6px 18px rgba(37,99,235,.15)}
-    .chip.mail{background:linear-gradient(90deg,rgba(124,58,237,.25),rgba(37,99,235,.25));}
-    .chip.link{background:linear-gradient(90deg,rgba(37,99,235,.25),rgba(6,182,212,.25));}
-    .chip.phone{background:linear-gradient(90deg,rgba(34,197,94,.25),rgba(245,158,11,.25));}
-    section{margin-top:28px}
-    .card{background:linear-gradient(180deg,rgba(255,255,255,0.04),rgba(255,255,255,0));
-      border:2px solid transparent;border-radius:20px;padding:24px;
-      background-clip:padding-box,border-box;position:relative;
-      box-shadow:0 10px 30px rgba(0,0,0,.25)}
-    .card:before{content:"";position:absolute;inset:-2px;border-radius:22px;z-index:-1;
-      background:linear-gradient(135deg,var(--c1),var(--c2),var(--c3),var(--c4));opacity:.35;filter:saturate(120%)}
-    .grid{display:grid;gap:16px}
-    .grid.cols-2{grid-template-columns:1fr 1fr}
-    .grid.cols-3{grid-template-columns:repeat(3,1fr)}
-    @media (max-width:880px){
-      header{grid-template-columns:1fr}.avatar{width:112px;height:112px}
-      h1{font-size:38px}.grid.cols-2,.grid.cols-3{grid-template-columns:1fr}
-    }
-    h2{font-size:22px;margin:0 0 14px;font-weight:800;letter-spacing:.02em;position:relative}
-    h2:after{content:"";display:block;height:3px;width:90px;margin-top:8px;border-radius:3px;
-      background:linear-gradient(90deg,var(--c2),var(--c3),transparent)}
-    h3{font-size:16px;margin:0 0 4px}.muted{color:var(--muted)}
-    .list{display:grid;gap:16px}.item{padding:16px;border-radius:16px;border:1px solid #1b2653;
-      background:linear-gradient(180deg,#0f1733 0%, #0b122b 100%)}.item h4{margin:0 0 6px;font-size:16px}
-    .item ul{margin:6px 0 0 18px}.item ul li{margin:6px 0}
-    .skill-icons{display:flex;flex-wrap:wrap;gap:16px}.skill-icons i{font-size:28px;filter:drop-shadow(0 6px 12px rgba(0,0,0,.35))}
-    footer{margin-top:40px;color:var(--muted);font-size:13px;text-align:center}
-    .cta{margin-top:16px;display:inline-block;background:linear-gradient(90deg,var(--c1),var(--c2),var(--c3));
-      padding:12px 16px;border-radius:12px;color:#0b1220;font-weight:800;box-shadow:0 10px 28px rgba(93,169,255,.35);
-      transform:translateY(0);transition:transform .2s ease}.cta:hover{transform:translateY(-2px)}
-  </style>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Kusuma Challa · Data Science & Machine Learning</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.15.1/devicon.min.css">
+
+<style>
+/* === Base Theme === */
+:root{
+--bg1:#070a1a; --bg2:#0d0f24; --card:#111633; --ink:#f6fbff;
+--muted:#b7c4de; --c1:#7c3aed; --c2:#2563eb; --c3:#06b6d4;
+--c4:#22c55e; --c5:#f59e0b; --c6:#ef4444; --border:#243167;
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{
+background:linear-gradient(-45deg,#020024,#090979,#00d4ff,#001f3f);
+background-size:400% 400%;
+animation:gradientShift 10s ease infinite;
+color:var(--ink);
+font-family:'Inter',sans-serif;
+scroll-behavior:smooth;
+}
+@keyframes gradientShift{
+0%{background-position:0% 50%}
+50%{background-position:100% 50%}
+100%{background-position:0% 50%}
+}
+
+.container{max-width:1080px;margin:0 auto;padding:32px 20px 80px}
+
+/* === Header === */
+header{
+display:grid;
+grid-template-columns:140px 1fr;
+gap:24px;
+align-items:center;
+margin-top:20px;
+animation:fadeIn 1s ease forwards;
+}
+.avatar{
+width:140px;height:140px;border-radius:22px;object-fit:cover;
+border:2px solid var(--border);background:#0e1627;
+box-shadow:0 10px 30px rgba(0,0,0,.25);
+transition:transform .6s ease;
+}
+.avatar:hover{transform:rotateY(20deg) rotateX(10deg) scale(1.05)}
+.typewriter{
+overflow:hidden;border-right:.15em solid orange;white-space:nowrap;
+letter-spacing:.1em;animation:typing 3.5s steps(30,end),blink-caret .75s step-end infinite;
+font-size:48px;font-weight:900;
+background:linear-gradient(90deg,var(--c1),var(--c2),var(--c3),var(--c4),var(--c5),var(--c6));
+-webkit-background-clip:text;color:transparent;
+}
+@keyframes typing{from{width:0}to{width:100%}}
+@keyframes blink-caret{from,to{border-color:transparent}50%{border-color:orange}}
+.subtitle{font-size:18px;color:var(--muted);margin-top:6px}
+.contact{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+.chip{
+display:inline-flex;align-items:center;gap:8px;
+background:linear-gradient(90deg,#1a234e,#121a3b);
+border:1px solid var(--border);padding:8px 12px;border-radius:999px;
+font-size:14px;color:var(--ink);
+box-shadow:0 6px 18px rgba(37,99,235,.15);
+}
+.cta{
+margin-top:16px;display:inline-block;
+background:linear-gradient(90deg,var(--c1),var(--c2),var(--c3));
+padding:12px 16px;border-radius:12px;color:#0b1220;font-weight:800;
+box-shadow:0 10px 28px rgba(93,169,255,.35);
+transition:transform .2s ease;
+}
+.cta:hover{transform:translateY(-2px)}
+
+/* === Moving Skills Ticker === */
+.skills-ticker{
+overflow:hidden;white-space:nowrap;
+background:rgba(255,255,255,0.1);
+color:#fff;padding:10px 0;margin-top:20px;border-radius:10px;
+font-size:1rem;font-weight:500;
+}
+.skills-ticker span{
+display:inline-block;padding-left:100%;
+animation:scroll 25s linear infinite;
+}
+@keyframes scroll{0%{transform:translateX(0)}100%{transform:translateX(-100%)}}
+
+/* === Card + 3D Hover === */
+section{margin-top:28px;animation:fadeIn 1s ease forwards}
+.card{
+background:linear-gradient(180deg,rgba(255,255,255,0.04),rgba(255,255,255,0));
+border-radius:20px;padding:24px;position:relative;
+box-shadow:0 10px 30px rgba(0,0,0,.25);
+transition:transform 0.4s ease, box-shadow 0.4s ease;
+transform-style:preserve-3d;
+}
+.card:hover{
+transform:rotateY(4deg) rotateX(3deg) scale(1.02);
+box-shadow:0 20px 40px rgba(0,0,0,.5);
+}
+.card:before{
+content:"";position:absolute;inset:-2px;border-radius:22px;z-index:-1;
+background:linear-gradient(135deg,var(--c1),var(--c2),var(--c3),var(--c4));
+opacity:.35;filter:saturate(120%);
+}
+h2{font-size:22px;margin:0 0 14px;font-weight:800;}
+h2:after{content:"";display:block;height:3px;width:90px;margin-top:8px;border-radius:3px;
+background:linear-gradient(90deg,var(--c2),var(--c3),transparent)}
+.grid{display:grid;gap:16px}
+.grid.cols-2{grid-template-columns:1fr 1fr}
+@media(max-width:880px){header{grid-template-columns:1fr}.grid.cols-2{grid-template-columns:1fr}}
+
+.list{display:grid;gap:16px}
+.item{padding:16px;border-radius:16px;border:1px solid #1b2653;
+background:linear-gradient(180deg,#0f1733 0%, #0b122b 100%)}
+.skill-icons{display:flex;flex-wrap:wrap;gap:16px;justify-content:center}
+.skill-icons i{font-size:30px;filter:drop-shadow(0 6px 12px rgba(0,0,0,.35))}
+footer{margin-top:40px;color:var(--muted);font-size:13px;text-align:center}
+
+@keyframes fadeIn{to{opacity:1;transform:translateY(0)}}
+
+/* === Project Carousel === */
+.carousel{display:flex;overflow:hidden;position:relative}
+.carousel-track{
+display:flex;animation:slide 30s linear infinite;
+}
+.carousel .item{
+min-width:300px;margin-right:16px;
+flex-shrink:0;
+}
+@keyframes slide{
+0%{transform:translateX(0)}
+100%{transform:translateX(-50%)}
+}
+</style>
 </head>
+
 <body>
-  <div class="container">
-    <!-- Header -->
-    <header>
-      <img class="avatar" src="kusuma_photo.png" alt="Kusuma profile photo" />
-      <div>
-        <h1>Kusuma Challa</h1>
-        <div class="subtitle">MSc Data Science Student · Machine Learning · Deep Learning · SQL · Cloud · Visualization</div>
-        <div class="contact">
-          <span class="chip mail"><i>📧 kusumachalla79@gmail.com</i></span>
-          <a class="chip link" href="https://www.linkedin.com/in/kusuma-challa" target="_blank"><i>🔗 linkedin.com/in/kusuma-challa</i></a>
-          <span class="chip phone"><i>📞 +44 7554 859972</i></span>
-        </div>
-        <a class="cta" href="#projects">View Featured Projects ↓</a>
-      </div>
-    </header>
+<div class="container">
+<header>
+<img class="avatar" src="kusuma_photo.png" alt="Kusuma profile photo" />
+<div>
+<h1 class="typewriter">Hi, I'm Kusuma Challa 👋</h1>
+<div class="subtitle">MSc Data Science Student · Machine Learning · Deep Learning · SQL · Cloud · Visualization</div>
+<div class="contact">
+<span class="chip">📧 kusumachalla79@gmail.com</span>
+<a class="chip" href="https://www.linkedin.com/in/kusuma-challa" target="_blank">🔗 linkedin.com/in/kusuma-challa</a>
+<span class="chip">📞 +44 7554 859972</span>
+</div>
+<a class="cta" href="#projects">View Featured Projects ↓</a>
+</div>
+</header>
 
-    <!-- Summary -->
-    <section class="card" id="about">
-      <h2>Professional Summary</h2>
-      <p>
-        Machine Learning and Data Science graduate student with hands-on experience in deep learning, large-scale data analysis, and recommender systems. Skilled in Python, SQL, and advanced ML frameworks with a strong foundation in algorithms, model optimization, and statistical analysis. Experienced in building models for forecasting, healthcare, and image analysis. Passionate about developing scalable recommendation systems that drive personalization and engagement.
-      </p>
-    </section>
+<div class="skills-ticker">
+<span>Python · SQL · Machine Learning · Deep Learning · AWS · Power BI · Tableau · TensorFlow · Pandas · NumPy · Scikit-learn · Snowflake · Data Visualization · Predictive Analytics · Cloud Computing</span>
+</div>
 
-    <!-- Skills & Certifications -->
-    <section class="grid cols-2">
-      <div class="card">
-        <h2>Technical Skills</h2>
-        <div class="skill-icons">
-          <i class="devicon-python-plain"></i>
-          <i class="devicon-r-original"></i>
-          <i class="devicon-mysql-plain"></i>
-          <i class="devicon-amazonwebservices-plain-wordmark"></i>
-          <i class="devicon-googlecloud-plain"></i>
-          <i class="devicon-pandas-original"></i>
-          <i class="devicon-numpy-original"></i>
-          <i class="devicon-tensorflow-original"></i>
-          <i class="devicon-git-plain"></i>
-          <i class="devicon-vscode-plain"></i>
-          <i class="devicon-anaconda-original"></i>
-        </div>
-      </div>
-      <div class="card">
-        <h2>Certifications</h2>
-        <ul class="list">
-          <li>CSS Certification – HackerRank</li>
-          <li>Data Science – British Airways</li>
-          <li>Oracle SQL Certification</li>
-          <li>AWS Certification (In Progress)</li>
-          <li>Deloitte Data Analytics Job Simulation</li>
-          <li>Tata Data Visualization Certification</li>
-          <li>Google Cloud Platform (In Progress)</li>
-        </ul>
-      </div>
-    </section>
+<section class="card" id="about">
+<h2>Professional Summary</h2>
+<p>Machine Learning and Data Science graduate student with hands-on experience in deep learning, large-scale data analysis, and recommender systems. Skilled in Python, SQL, and advanced ML frameworks with a strong foundation in algorithms, model optimization, and statistical analysis. Experienced in building models for forecasting, healthcare, and image analysis. Passionate about developing scalable recommendation systems that drive personalization and engagement.</p>
+</section>
 
-    <!-- Experience -->
-    <section class="card" id="experience">
-      <h2>Professional Experience</h2>
-      <div class="list">
-        <div class="item">
-          <h4>Process Associate (Data Analysis & Reporting) · Nimble Property</h4>
-          <div class="muted">Remote · New York · Jun 2023 – Jun 2024</div>
-          <ul>
-            <li>Analyzed large-scale financial/operational datasets using Python & SQL.</li>
-            <li>Performed data cleaning, consolidation, and anomaly detection.</li>
-            <li>Generated reports & insights to support client decisions.</li>
-          </ul>
-        </div>
-        <div class="item">
-          <h4>Intern · COAPPS Healthcare Data Navigation</h4>
-          <div class="muted">Remote · Mar 2024 – May 2024</div>
-          <ul>
-            <li>Processed electronic health records & genomic data.</li>
-            <li>Applied Python & TensorFlow to identify health patterns.</li>
-          </ul>
-        </div>
-        <div class="item">
-          <h4>Front of House · Indas Pubs Ltd / Admiral Codrington</h4>
-          <div class="muted">London · 2024 – 2025</div>
-          <ul>
-            <li>Managed bookings, billing, and customer records.</li>
-            <li>Developed attention to detail through daily operations & data entry.</li>
-          </ul>
-        </div>
-      </div>
-    </section>
+<section class="grid cols-2">
+<div class="card">
+<h2>Technical Skills</h2>
+<div class="skill-icons">
+<i class="devicon-python-plain"></i>
+<i class="devicon-r-original"></i>
+<i class="devicon-mysql-plain"></i>
+<i class="devicon-amazonwebservices-plain-wordmark"></i>
+<i class="devicon-googlecloud-plain"></i>
+<i class="devicon-pandas-original"></i>
+<i class="devicon-numpy-original"></i>
+<i class="devicon-tensorflow-original"></i>
+<i class="devicon-git-plain"></i>
+<i class="devicon-vscode-plain"></i>
+<i class="devicon-anaconda-original"></i>
+</div>
+</div>
+<div class="card">
+<h2>Certifications</h2>
+<ul class="list">
+<li>CSS Certification – HackerRank</li>
+<li>Data Science – British Airways</li>
+<li>Oracle SQL Certification</li>
+<li>AWS Certification (In Progress)</li>
+<li>Deloitte Data Analytics Job Simulation</li>
+<li>Tata Data Visualization Certification</li>
+<li>Google Cloud Platform (In Progress)</li>
+</ul>
+</div>
+</section>
 
-    <!-- Projects -->
-    <section class="card" id="projects">
-      <h2>Selected Projects</h2>
-      <div class="list">
-        <div class="item">
-          <h4>Time Series Forecasting – Supplement Industry Sales</h4>
-          <ul>
-            <li>Compared SARIMA, Prophet, XGBoost, and LSTM models.</li>
-            <li>LSTM achieved superior accuracy (MAPE 0.27%).</li>
-          </ul>
-        </div>
-        <div class="item">
-          <h4>COVID-19 Mortality Study</h4>
-          <ul>
-            <li>Analyzed UK & Ontario datasets with R & SQL.</li>
-            <li>Identified correlations between demographics & mortality.</li>
-          </ul>
-        </div>
-        <div class="item">
-          <h4>Credit Data EDA & Classification</h4>
-          <ul>
-            <li>Built classification models for credit scoring using Scikit-learn.</li>
-          </ul>
-        </div>
-        <div class="item">
-          <h4>Alzheimer’s Detection – MRI Analysis</h4>
-          <ul>
-            <li>Applied ML with feature extraction to enhance diagnosis accuracy.</li>
-          </ul>
-        </div>
-      </div>
-    </section>
+<section class="card" id="experience">
+<h2>Professional Experience</h2>
+<div class="list">
+<div class="item"><h4>Process Associate (Data Analysis & Reporting) · Nimble Property</h4>
+<div class="muted">Remote · New York · Jun 2023 – Jun 2024</div>
+<ul><li>Analyzed large-scale datasets using Python & SQL.</li>
+<li>Performed data cleaning, consolidation, and anomaly detection.</li>
+<li>Generated reports & insights to support client decisions.</li></ul></div>
+<div class="item"><h4>Intern · COAPPS Healthcare Data Navigation</h4>
+<div class="muted">Remote · Mar 2024 – May 2024</div>
+<ul><li>Processed health records & genomic data.</li><li>Applied Python & TensorFlow to identify patterns.</li></ul></div>
+</div>
+</section>
 
-    <!-- Education -->
-    <section class="grid cols-2">
-      <div class="card">
-        <h2>Education</h2>
-        <div class="list">
-          <div class="item">
-            <h4>MSc Data Science</h4>
-            <div class="muted">University of East London · 2024 – 2025</div>
-          </div>
-          <div class="item">
-            <h4>B.Tech in Computer Science</h4>
-            <div class="muted">JNTUH College of Engineering Hyderabad · 2020 – 2024</div>
-          </div>
-        </div>
-      </div>
-      <div class="card">
-        <h2>Extras</h2>
-        <ul class="list">
-          <li>Strong presentation & communication skills.</li>
-          <li>Open to graduate roles in Data Science / ML / Cloud.</li>
-        </ul>
-      </div>
-    </section>
+<!-- Project Carousel -->
+<section class="card" id="projects">
+<h2>Featured Projects</h2>
+<div class="carousel">
+<div class="carousel-track">
+<div class="item">
+<h4>Time Series Forecasting</h4>
+<p>Compared SARIMA, Prophet, and LSTM for sales forecasting.</p>
+</div>
+<div class="item">
+<h4>COVID-19 Mortality Study</h4>
+<p>Analyzed UK & Ontario datasets using R & SQL.</p>
+</div>
+<div class="item">
+<h4>Credit Data Classification</h4>
+<p>Developed ML models for credit risk prediction.</p>
+</div>
+<div class="item">
+<h4>Alzheimer’s Detection</h4>
+<p>Enhanced MRI-based diagnosis using CNN models.</p>
+</div>
+<div class="item">
+<h4>Time Series Forecasting</h4>
+<p>Compared SARIMA, Prophet, and LSTM for sales forecasting.</p>
+</div>
+</div>
+</div>
+</section>
 
-    <footer>
-      <div>Designed with ♥ and shipped on GitHub Pages. © <span id="year"></span> Kusuma Challa</div>
-    </footer>
-  </div>
-  <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+<section class="grid cols-2">
+<div class="card">
+<h2>Education</h2>
+<div class="list">
+<div class="item"><h4>MSc Data Science</h4><div class="muted">University of East London · 2024 – 2025</div></div>
+<div class="item"><h4>B.Tech in Computer Science</h4><div class="muted">JNTUH College of Engineering Hyderabad · 2020 – 2024</div></div>
+</div>
+</div>
+<div class="card">
+<h2>Extras</h2>
+<ul class="list">
+<li>Strong presentation & communication skills.</li>
+<li>Open to Data Science / ML / Cloud roles.</li>
+</ul>
+</div>
+</section>
+
+<footer>Designed with ♥ and hosted on GitHub Pages © <span id="year"></span> Kusuma Challa</footer>
+</div>
+
+<script>
+document.getElementById('year').textContent = new Date().getFullYear();
+</script>
 </body>
 </html>
