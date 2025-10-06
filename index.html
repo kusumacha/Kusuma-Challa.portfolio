@@ -3,426 +3,246 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Kusuma Challa · Data Engineer & Data Science</title>
+<title>Kusuma Challa · Data Engineer Portfolio</title>
 
-<!-- Fonts & DevIcons -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.15.1/devicon.min.css">
-
-<!-- Three.js (lightweight core) -->
 <script src="https://unpkg.com/three@0.152.2/build/three.min.js"></script>
 
 <style>
-  :root{
-    --bg1:#070a1a; --bg2:#0d0f24; --card:#0f1530; --ink:#f6fbff;
-    --muted:#b7c4de; --c1:#7c3aed; --c2:#2563eb; --c3:#06b6d4;
-    --glass: rgba(255,255,255,0.03);
-    --border:#243167;
-  }
-  *{box-sizing:border-box;margin:0;padding:0}
-  html,body{height:100%}
-  body{
-    font-family:'Inter',system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;
-    color:var(--ink);
-    background:linear-gradient(-45deg,#020024,#090979,#00d4ff,#001f3f);
-    background-size:400% 400%;
-    animation:gradientShift 12s ease infinite;
-    overflow-x:hidden;
-  }
-  @keyframes gradientShift{
-    0%{background-position:0% 50%}
-    50%{background-position:100% 50%}
-    100%{background-position:0% 50%}
-  }
+:root{
+  --card-bg: rgba(255,255,255,0.03);
+  --ink:#f6fbff;
+  --muted:#b7c4de;
+  --accent1:#7c3aed;
+  --accent2:#2563eb;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;font-family:'Inter',sans-serif;color:var(--ink);overflow-x:hidden;}
+body{background:#040720;position:relative;}
 
-  /* Fullscreen 3D background canvas */
-  #bg-canvas{
-    position:fixed; left:0; top:0; width:100%; height:100%; z-index:0; pointer-events:none;
-    mix-blend-mode:screen; opacity:0.95;
-  }
+#bg-canvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;}
 
-  .container{
-    max-width:1080px;margin:0 auto;padding:40px 20px 80px;position:relative;z-index:2;
-  }
+.container{max-width:1080px;margin:0 auto;padding:40px 20px;position:relative;z-index:2;}
 
-  header{
-    display:grid;grid-template-columns:140px 1fr;gap:24px;align-items:center;margin-top:8px;
-    animation:fadeIn 1s ease forwards;
-  }
-  .avatar{
-    width:140px;height:140px;border-radius:22px;object-fit:cover;border:2px solid var(--border);
-    background:linear-gradient(180deg,rgba(255,255,255,0.03), rgba(0,0,0,0.15));
-    box-shadow:0 10px 30px rgba(0,0,0,.35);
-    display:block;
-  }
-  .intro{
-    display:flex;flex-direction:column;gap:8px;
-  }
-  .title{
-    font-size:38px;font-weight:800;line-height:1.05;
-    display:flex;align-items:center;gap:12px;
-    background:linear-gradient(90deg,var(--c1),var(--c2),var(--c3));
-    -webkit-background-clip:text;color:transparent;
-  }
-  .subtitle{font-size:15px;color:var(--muted)}
-  .contact{display:flex;flex-wrap:wrap;gap:10px;margin-top:10px}
-  .chip{
-    display:inline-flex;align-items:center;gap:8px;background:linear-gradient(90deg,#12204a,#0b1430);
-    border:1px solid var(--border);padding:8px 12px;border-radius:999px;font-size:14px;color:var(--ink);
-    box-shadow:0 6px 18px rgba(37,99,235,.06)
-  }
-  .cta{
-    margin-top:14px;display:inline-block;background:linear-gradient(90deg,var(--c1),var(--c2));
-    padding:12px 16px;border-radius:12px;color:#0b1220;font-weight:800;box-shadow:0 10px 28px rgba(93,169,255,.18);
-    text-decoration:none;
-  }
+header{display:grid;grid-template-columns:140px 1fr;gap:24px;align-items:center;margin-top:12px;}
+@media(max-width:880px){header{grid-template-columns:1fr;text-align:center;}}
+.avatar{width:140px;height:140px;border-radius:20px;object-fit:cover;border:2px solid rgba(255,255,255,0.1);box-shadow:0 6px 20px rgba(0,0,0,.4);}
+.title{font-size:38px;font-weight:800;background:linear-gradient(90deg,var(--accent1),var(--accent2));-webkit-background-clip:text;color:transparent;}
+.subtitle{font-size:15px;color:var(--muted);margin-top:8px;}
+.contact{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px;}
+.chip{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:999px;padding:8px 12px;font-size:14px;}
+.cta{margin-top:16px;display:inline-block;background:linear-gradient(90deg,var(--accent1),var(--accent2));padding:10px 18px;border-radius:10px;color:#fff;font-weight:700;text-decoration:none;}
 
-  .skills-ticker{
-    overflow:hidden;white-space:nowrap;background:rgba(255,255,255,0.04);
-    color:#fff;padding:10px 0;margin-top:20px;border-radius:10px;font-size:1rem;font-weight:600;
-    border:1px solid rgba(255,255,255,0.03);
-  }
-  .skills-ticker span{display:inline-block;padding-left:100%;animation:scroll 22s linear infinite}
-  @keyframes scroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+section{margin-top:28px;}
+.card{background:var(--card-bg);border-radius:16px;padding:22px;box-shadow:0 8px 30px rgba(0,0,0,.35);border:1px solid rgba(255,255,255,0.05);}
+h2{font-size:20px;font-weight:800;margin-bottom:10px;}
+p,li{color:var(--muted);line-height:1.6;}
+.list{display:grid;gap:12px;}
+.grid{display:grid;gap:16px;}
+.grid.cols-2{grid-template-columns:1fr 1fr;}
+@media(max-width:880px){.grid.cols-2{grid-template-columns:1fr;}}
 
-  section{margin-top:26px;animation:fadeIn 1s ease forwards}
-  .card{
-    background:linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0));
-    border-radius:18px;padding:22px;position:relative;box-shadow:0 12px 40px rgba(2,6,23,.6);
-    border:1px solid rgba(255,255,255,0.03);
-    transition:transform .35s ease, box-shadow .35s ease;
-    backdrop-filter: blur(6px);
-  }
-  .card:hover{transform:translateY(-6px);box-shadow:0 24px 60px rgba(2,6,23,.75)}
-  .card:before{content:"";position:absolute;inset:-2px;border-radius:20px;z-index:-1;background:linear-gradient(135deg,var(--c1),var(--c2),var(--c3));opacity:.08;filter:saturate(120%)}
+.skill-icons{display:flex;flex-wrap:wrap;gap:12px;margin-top:8px;}
+.skill-icons i{font-size:28px;filter:drop-shadow(0 4px 8px rgba(0,0,0,.3));}
+.tag{display:inline-block;background:rgba(255,255,255,0.05);padding:6px 10px;border-radius:999px;font-size:13px;margin-right:6px;}
 
-  h2{font-size:20px;margin:0 0 12px;font-weight:800;}
-  p, li{color:var(--muted);line-height:1.55}
-  .muted{color:var(--muted);font-size:13px;margin-top:6px}
-  .grid{display:grid;gap:16px}
-  .grid.cols-2{grid-template-columns:1fr 1fr}
-  @media(max-width:880px){header{grid-template-columns:1fr}.grid.cols-2{grid-template-columns:1fr}}
+.projects-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:12px;}
+@media(max-width:880px){.projects-grid{grid-template-columns:1fr;}}
 
-  .skill-icons{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
-  .skill-icons i{font-size:28px;filter:drop-shadow(0 6px 12px rgba(0,0,0,.35))}
-  .list{display:grid;gap:12px}
-  .item{padding:14px;border-radius:12px;border:1px solid rgba(255,255,255,0.03);background:linear-gradient(180deg,#0b1230,#06102a)}
-  footer{margin-top:40px;color:var(--muted);font-size:13px;text-align:center}
-
-  /* Project carousel simplified (auto-scroll) */
-  .carousel{display:flex;overflow:hidden;position:relative;margin-top:8px}
-  .carousel-track{display:flex;animation:slide 35s linear infinite}
-  .carousel .item{min-width:320px;margin-right:16px;flex-shrink:0}
-  @keyframes slide{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
-
-  /* small utilities */
-  .meta{font-size:13px;color:var(--muted)}
-  .tag{display:inline-block;padding:6px 10px;border-radius:999px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.02);font-size:13px;margin-right:8px}
-
-  @keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+footer{margin-top:40px;text-align:center;color:var(--muted);font-size:13px;}
 </style>
 </head>
+
 <body>
-<!-- 3D background canvas -->
 <canvas id="bg-canvas"></canvas>
 
 <div class="container">
-  <header>
-    <img class="avatar" src="kusuma_photo.png" alt="Kusuma profile photo" />
-    <div class="intro">
-      <div class="title">Hi — I'm <span style="margin-left:6px">Kusuma Challa</span> <span style="font-size:22px">👩‍💻</span></div>
-      <div class="subtitle">Data Engineer · ETL · Pipelines · Cloud Analytics · ML integration</div>
-
-      <div class="contact">
-        <span class="chip">📧 kusumachalla79@gmail.com</span>
-        <a class="chip" href="https://www.linkedin.com/in/kusuma-challa" target="_blank" rel="noopener">🔗 linkedin.com/in/kusuma-challa</a>
-        <span class="chip">📞 +44 7554 859972</span>
-      </div>
-
-      <a class="cta" href="#projects">View Featured Projects ↓</a>
+<header>
+  <img src="kusuma_photo.png" alt="Kusuma photo" class="avatar" />
+  <div>
+    <h1 class="title">Hi, I'm Kusuma Challa👋</h1>
+    <div class="subtitle">Data Engineer · Cloud · ETL Pipelines · Analytics</div>
+    <div class="contact">
+      <span class="chip">📧 kusumachalla79@gmail.com</span>
+      <a class="chip" href="https://www.linkedin.com/in/kusuma-challa" target="_blank">🔗 linkedin.com/in/kusuma-challa</a>
+      <span class="chip">📞 +44 7554 859972</span>
     </div>
-  </header>
+    <a class="cta" href="#projects">View Featured Projects ↓</a>
+  </div>
+</header>
 
-  <div class="skills-ticker" aria-hidden="true">
-    <span>Python · SQL · Apache Airflow · ETL · AWS (S3, Lambda, Glue) · Power BI · Tableau · TensorFlow · Pandas · NumPy · XGBoost · Data Warehousing · Data Modelling · Data Pipelines · Cloud Analytics</span>
+<section class="card" id="about">
+  <h2>Professional Summary</h2>
+  <p>
+    Data Engineer with experience building and managing ETL pipelines, automating workflows, and developing cloud-based analytics solutions using Python, SQL, and AWS. Passionate about turning raw data into meaningful insights, integrating ML models, and creating scalable systems for business intelligence.
+  </p>
+</section>
+
+<section class="grid cols-2">
+  <div class="card">
+    <h2>Technical Skills</h2>
+    <div class="skill-icons">
+      <i class="devicon-python-plain"></i>
+      <i class="devicon-sqlite-plain"></i>
+      <i class="devicon-amazonwebservices-plain-wordmark"></i>
+      <i class="devicon-pandas-original"></i>
+      <i class="devicon-numpy-original"></i>
+      <i class="devicon-tensorflow-original"></i>
+      <i class="devicon-mysql-plain"></i>
+      <i class="devicon-tableau-plain"></i>
+      <i class="devicon-powerbi-plain"></i>
+    </div>
+    <div style="margin-top:10px;">
+      <span class="tag">ETL</span><span class="tag">Airflow</span><span class="tag">AWS</span><span class="tag">Data Warehousing</span><span class="tag">Dashboards</span>
+    </div>
   </div>
 
-  <section class="card" id="about">
-    <h2>Professional Summary</h2>
-    <p>
-      Data Engineer with hands-on experience building and managing ETL pipelines, automating workflows, and developing cloud-based analytics solutions using Python, SQL and AWS.
-      I turn raw, complex data into meaningful, production-ready pipelines and dashboards that drive business decisions. Practical experience with Airflow, Power BI, TensorFlow and data modelling.
-    </p>
-  </section>
+  <div class="card">
+    <h2>Certifications & Tools</h2>
+    <ul class="list">
+      <li>ETL & Pipeline Development — Apache Airflow</li>
+      <li>Power BI & Dashboard Reporting</li>
+      <li>Oracle / MySQL / PostgreSQL (SQL)</li>
+      <li>AWS (S3, Lambda, Glue, EC2)</li>
+      <li>TensorFlow & Scikit-learn Integration</li>
+    </ul>
+  </div>
+</section>
 
-  <section class="grid cols-2" aria-labelledby="skills-title">
-    <div class="card">
-      <h2 id="skills-title">Technical Skills</h2>
-      <div class="skill-icons" aria-hidden="false">
-        <i class="devicon-python-plain" title="Python"></i>
-        <i class="devicon-sqlite-plain" title="SQL"></i>
-        <i class="devicon-amazonwebservices-plain-wordmark" title="AWS"></i>
-        <i class="devicon-pandas-original" title="Pandas"></i>
-        <i class="devicon-numpy-original" title="NumPy"></i>
-        <i class="devicon-tensorflow-original" title="TensorFlow"></i>
-        <i class="devicon-git-plain" title="Git"></i>
-        <i class="devicon-mysql-plain" title="MySQL"></i>
-        <i class="devicon-tableau-plain" title="Tableau"></i>
-        <i class="devicon-powerbi-plain" title="Power BI"></i>
-      </div>
-
-      <div style="margin-top:12px" class="meta">
-        <span class="tag">ETL / Airflow</span>
-        <span class="tag">Data Warehousing</span>
-        <span class="tag">Cloud (AWS)</span>
-      </div>
-    </div>
-
-    <div class="card">
-      <h2>Certifications & Tools</h2>
-      <ul class="list" style="margin-top:8px">
-        <li>ETL & Data Pipeline Development (Apache Airflow) · Hands-on</li>
-        <li>Power BI & Dashboard Reporting</li>
-        <li>Oracle / MySQL / PostgreSQL — SQL</li>
-        <li>AWS (S3, Lambda, Glue, EC2) — Cloud Analytics</li>
-        <li>TensorFlow & Scikit-learn — ML model integration</li>
+<section class="card" id="experience">
+  <h2>Professional Experience</h2>
+  <div class="list">
+    <div>
+      <h4>Data Analyst · Nimble Property</h4>
+      <div class="muted">Remote · New York · Jun 2023 – Jun 2024</div>
+      <ul>
+        <li>Developed automated ETL pipelines using Python & SQL for large hospitality datasets.</li>
+        <li>Improved data quality and efficiency through validation and transformation processes.</li>
+        <li>Created Power BI dashboards for client financial reporting and insights.</li>
       </ul>
     </div>
-  </section>
 
-  <section class="card" id="experience">
-    <h2>Professional Experience</h2>
-
-    <div class="list" style="margin-top:10px">
-      <div class="item">
-        <h4>Data Analyst / Process Associate · Nimble Property</h4>
-        <div class="muted">Remote · New York · Jun 2023 – Jun 2024</div>
-        <ul>
-          <li>Built automated ETL and reporting workflows using Python & SQL to clean and transform hospitality datasets.</li>
-          <li>Improved data accuracy and reporting cadence; created dashboards for operational decision-making (Power BI).</li>
-          <li>Identified and resolved data inconsistencies and implemented validation steps in pipelines.</li>
-        </ul>
-      </div>
-
-      <div class="item">
-        <h4>Data Analyst Intern · COAPPS Healthcare Data Navigation</h4>
-        <div class="muted">Remote · Mar 2024 – May 2024</div>
-        <ul>
-          <li>Processed healthcare & genomic datasets; implemented preprocessing and modelling pipelines using Python and TensorFlow.</li>
-          <li>Ran EDA and statistical analysis to support clinical research insights and model training.</li>
-        </ul>
-      </div>
-    </div>
-  </section>
-
-  <!-- Projects -->
-  <section class="card" id="projects">
-    <h2>Featured Projects</h2>
-    <div class="carousel" aria-hidden="false">
-      <div class="carousel-track">
-        <div class="item card">
-          <h4>Time Series Forecasting — Supplement Industry</h4>
-          <div class="muted">SARIMA · Prophet · LSTM · XGBoost</div>
-          <p>Built LSTM and hybrid models on multi-year weekly sales (4,000+ records), reducing MAPE and improving inventory predictions. Visualised results in dashboards to influence purchasing strategy.</p>
-        </div>
-
-        <div class="item card">
-          <h4>COVID-19 Mortality Study (UK & Ontario)</h4>
-          <div class="muted">R · SQL · ggplot2</div>
-          <p>Analysed population- and region-level datasets to investigate socio-economic and healthcare access drivers in mortality trends. Delivered reproducible reports and visualisations.</p>
-        </div>
-
-        <div class="item card">
-          <h4>Credit Risk Prediction</h4>
-          <div class="muted">Logistic Regression · Random Forest · XGBoost</div>
-          <p>Engineered features and compared models to classify credit risk, optimised for fewer false negatives to improve risk mitigation strategies.</p>
-        </div>
-
-        <div class="item card">
-          <h4>Alzheimer’s Detection from MRI</h4>
-          <div class="muted">CNN · TensorFlow</div>
-          <p>Preprocessed MRI scans and trained CNN models with additional denoising and transform steps to detect early-stage Alzheimer's features.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="grid cols-2">
-    <div class="card">
-      <h2>Education</h2>
-      <div class="list">
-        <div class="item">
-          <h4>MSc Data Science</h4>
-          <div class="muted">University of East London · Sep 2024 – Sep 2025</div>
-        </div>
-        <div class="item">
-          <h4>B.Tech in Computer Science</h4>
-          <div class="muted">JNTUH College of Engineering · Jun 2020 – Jun 2024</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="card">
-      <h2>Extras</h2>
-      <ul class="list">
-        <li>Strong communication & presentation skills — transforming technical outputs into business insights.</li>
-        <li>Open to roles in Data Engineering, ML Ops, and Cloud Analytics.</li>
+    <div>
+      <h4>Data Analyst Intern · COAPPS Healthcare Data Navigation</h4>
+      <div class="muted">Remote · Mar 2024 – May 2024</div>
+      <ul>
+        <li>Processed and analysed healthcare datasets with Python and TensorFlow for predictive modeling.</li>
+        <li>Conducted EDA and statistical analysis to support research and data-driven healthcare insights.</li>
       </ul>
     </div>
-  </section>
+  </div>
+</section>
 
-  <footer>Designed with ♥ and hosted on GitHub Pages © <span id="year"></span> Kusuma Challa</footer>
+<section class="card" id="projects">
+  <h2>Featured Projects</h2>
+  <div class="projects-grid">
+    <div class="card">
+      <h4>Time Series Forecasting — Supplement Industry</h4>
+      <p>Built and compared models (SARIMA, Prophet, LSTM) for sales forecasting. Improved demand prediction accuracy by 85% using LSTM.</p>
+    </div>
+    <div class="card">
+      <h4>COVID-19 Mortality Data Analysis</h4>
+      <p>Analysed UK & Ontario datasets using R and SQL to identify socio-economic and healthcare factors affecting mortality trends.</p>
+    </div>
+    <div class="card">
+      <h4>Credit Risk Prediction</h4>
+      <p>Developed ML models to predict customer creditworthiness using Logistic Regression, Random Forest, and XGBoost.</p>
+    </div>
+    <div class="card">
+      <h4>Alzheimer’s Detection with Deep Learning</h4>
+      <p>Trained CNN models on MRI data to detect early Alzheimer’s indicators. Improved accuracy using preprocessing and curvelet transforms.</p>
+    </div>
+  </div>
+</section>
+
+<section class="grid cols-2">
+  <div class="card">
+    <h2>Education</h2>
+    <ul class="list">
+      <li><strong>MSc Data Science</strong> — University of East London · 2024–2025</li>
+      <li><strong>B.Tech Computer Science</strong> — JNTUH College of Engineering · 2020–2024</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h2>Extras</h2>
+    <ul class="list">
+      <li>Excellent communication and presentation skills.</li>
+      <li>Open to Data Engineering, ML Ops, and Cloud roles.</li>
+    </ul>
+  </div>
+</section>
+
+<footer>© <span id="year"></span> Kusuma Challa · Designed with ♥ and hosted on GitHub Pages</footer>
 </div>
 
 <script>
-  // set year
-  document.getElementById('year').textContent = new Date().getFullYear();
+document.getElementById("year").textContent = new Date().getFullYear();
 
-  /* ===========================
-     Three.js: 3D interactive floating icons (sprites)
-     =========================== */
-  (function(){
-    const canvas = document.getElementById('bg-canvas');
-    const renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true });
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-    renderer.setSize(window.innerWidth, window.innerHeight);
+/* === Professional 3D Gradient Background === */
+const canvas = document.getElementById('bg-canvas');
+const renderer = new THREE.WebGLRenderer({canvas, antialias:true});
+renderer.setPixelRatio(window.devicePixelRatio);
+renderer.setSize(window.innerWidth, window.innerHeight);
 
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 1, 4000);
-    camera.position.z = 800;
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(60, window.innerWidth/window.innerHeight, 0.1, 1000);
+camera.position.z = 5;
 
-    // Create several sprite textures from emoji drawn on canvas
-    function createEmojiTexture(emoji, size = 128, bg = 'rgba(0,0,0,0)') {
-      const c = document.createElement('canvas');
-      c.width = size; c.height = size;
-      const ctx = c.getContext('2d');
-      // optional backdrop circle
-      ctx.fillStyle = bg;
-      ctx.fillRect(0,0,size,size);
-      const fontSize = Math.floor(size * 0.6);
-      ctx.font = `${fontSize}px serif`;
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
-      ctx.fillStyle = 'white';
-      ctx.fillText(emoji, size/2, size/2 + (fontSize*0.06));
-      const tex = new THREE.CanvasTexture(c);
-      tex.needsUpdate = true;
-      return tex;
-    }
+// Gradient plane shader material
+const geometry = new THREE.PlaneGeometry(10,10,64,64);
+const uniforms = {
+  uTime: { value: 0.0 },
+  uColor1: { value: new THREE.Color(0x0b0f3f) },
+  uColor2: { value: new THREE.Color(0x1e3a8a) }
+};
+const material = new THREE.ShaderMaterial({
+  uniforms,
+  vertexShader: `
+    varying vec2 vUv;
+    void main() {
+      vUv = uv;
+      vec3 pos = position;
+      pos.z += sin(pos.x*2.0 + pos.y*2.0 + (uTime*0.5)) * 0.15;
+      gl_Position = projectionMatrix * modelViewMatrix * vec4(pos,1.0);
+    }`,
+  fragmentShader: `
+    uniform float uTime;
+    uniform vec3 uColor1;
+    uniform vec3 uColor2;
+    varying vec2 vUv;
+    void main(){
+      float wave = 0.5 + 0.5*sin(uTime*0.3 + vUv.y*3.14);
+      vec3 color = mix(uColor1, uColor2, wave + 0.15*sin(uTime*0.2 + vUv.x*2.0));
+      gl_FragColor = vec4(color,1.0);
+    }`,
+  side: THREE.DoubleSide
+});
+const plane = new THREE.Mesh(geometry, material);
+scene.add(plane);
 
-    // Emoji/icons to use for data-theme. Use emoji for cross-platform lightweight approach.
-    const spritesConfig = [
-      { emoji: '☁️', scale: 80 },
-      { emoji: '🐍', scale: 88 },   // python
-      { emoji: '🗄️', scale: 78 },   // database/filecabinet
-      { emoji: '📊', scale: 78 },   // chart
-      { emoji: '⚙️', scale: 70 },   // gear
-      { emoji: '🧠', scale: 78 },   // AI
-    ];
+let mouseX = 0, mouseY = 0;
+document.addEventListener('mousemove', e=>{
+  mouseX = (e.clientX / window.innerWidth - 0.5) * 2;
+  mouseY = (e.clientY / window.innerHeight - 0.5) * 2;
+});
 
-    // create pool of sprites
-    const sprites = [];
-    const spriteCount = 40; // total sprites in scene
-    for (let i=0;i<spriteCount;i++){
-      const cfg = spritesConfig[i % spritesConfig.length];
-      const texture = createEmojiTexture(cfg.emoji, 128);
-      const material = new THREE.SpriteMaterial({ map: texture, transparent: true, opacity: 0.95 });
-      const sprite = new THREE.Sprite(material);
-      // random position in a large 3D box
-      sprite.position.x = (Math.random() - 0.5) * 2200;
-      sprite.position.y = (Math.random() - 0.5) * 1200;
-      sprite.position.z = (Math.random() - 0.5) * 1600;
-      const s = (0.7 + Math.random() * 1.8) * (cfg.scale / 100);
-      sprite.scale.set(s * cfg.scale, s * cfg.scale, 1);
-      sprite.userData = {
-        velocity: {
-          x: (Math.random() - 0.5) * 0.3,
-          y: (Math.random() - 0.5) * 0.3,
-          z: (Math.random() - 0.5) * 0.3
-        },
-        rotSpeed: (Math.random() - 0.5) * 0.002
-      };
-      scene.add(sprite);
-      sprites.push(sprite);
-    }
+function animate(){
+  requestAnimationFrame(animate);
+  uniforms.uTime.value += 0.05;
+  plane.rotation.x = mouseY * 0.1;
+  plane.rotation.y = mouseX * 0.1;
+  renderer.render(scene, camera);
+}
+animate();
 
-    // subtle ambient light (not strictly needed for sprites but keeps scene coherent)
-    const ambient = new THREE.AmbientLight(0xffffff, 0.6);
-    scene.add(ambient);
-
-    // mouse interaction variables (for parallax)
-    let mouseX = 0, mouseY = 0;
-    let targetX = 0, targetY = 0;
-
-    document.addEventListener('mousemove', (e) => {
-      mouseX = (e.clientX - window.innerWidth / 2);
-      mouseY = (e.clientY - window.innerHeight / 2);
-    });
-
-    // touch support
-    document.addEventListener('touchmove', (e) => {
-      if (e.touches && e.touches.length) {
-        mouseX = (e.touches[0].clientX - window.innerWidth / 2);
-        mouseY = (e.touches[0].clientY - window.innerHeight / 2);
-      }
-    }, {passive:true});
-
-    // animation loop
-    function animate() {
-      requestAnimationFrame(animate);
-
-      // subtle parallax to camera based on mouse
-      targetX += (mouseX - targetX) * 0.0025;
-      targetY += (mouseY - targetY) * 0.0025;
-      camera.position.x = targetX * 0.07;
-      camera.position.y = -targetY * 0.07;
-
-      // move sprites slowly
-      for (let s of sprites){
-        s.position.x += s.userData.velocity.x;
-        s.position.y += s.userData.velocity.y;
-        s.position.z += s.userData.velocity.z;
-
-        // gentle rotation sim via scale/position jitter
-        s.material.rotation += s.userData.rotSpeed;
-
-        // wrap-around bounds
-        const boundX = 1200, boundY = 700, boundZ = 1200;
-        if (s.position.x > boundX) s.position.x = -boundX;
-        if (s.position.x < -boundX) s.position.x = boundX;
-        if (s.position.y > boundY) s.position.y = -boundY;
-        if (s.position.y < -boundY) s.position.y = boundY;
-        if (s.position.z > boundZ) s.position.z = -boundZ;
-        if (s.position.z < -boundZ) s.position.z = boundZ;
-      }
-
-      renderer.render(scene, camera);
-    }
-
-    animate();
-
-    // handle resize
-    function onResize(){
-      const w = window.innerWidth;
-      const h = window.innerHeight;
-      renderer.setSize(w, h);
-      camera.aspect = w / h;
-      camera.updateProjectionMatrix();
-    }
-    window.addEventListener('resize', onResize);
-
-    /* Optionally: pause animation when tab hidden to save CPU */
-    document.addEventListener('visibilitychange', function(){
-      if (document.hidden){
-        renderer.domElement.style.opacity = 0.7;
-      } else {
-        renderer.domElement.style.opacity = 0.95;
-      }
-    });
-
-  })();
+window.addEventListener('resize', ()=>{
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(window.innerWidth, window.innerHeight);
+});
 </script>
 </body>
 </html>
