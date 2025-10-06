@@ -3,207 +3,426 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Kusuma Challa · Data Engineer & Cloud Analytics</title>
+<title>Kusuma Challa · Data Engineer & Data Science</title>
+
+<!-- Fonts & DevIcons -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.15.1/devicon.min.css">
 
+<!-- Three.js (lightweight core) -->
+<script src="https://unpkg.com/three@0.152.2/build/three.min.js"></script>
+
 <style>
-/* === Base Theme === */
-:root{
---bg1:#020024; --bg2:#090979; --bg3:#00d4ff; --bg4:#001f3f;
---card:#111633; --ink:#f6fbff; --muted:#b7c4de;
---c1:#7c3aed; --c2:#2563eb; --c3:#06b6d4; --c4:#22c55e;
---c5:#f59e0b; --c6:#ef4444; --border:#243167;
-}
+  :root{
+    --bg1:#070a1a; --bg2:#0d0f24; --card:#0f1530; --ink:#f6fbff;
+    --muted:#b7c4de; --c1:#7c3aed; --c2:#2563eb; --c3:#06b6d4;
+    --glass: rgba(255,255,255,0.03);
+    --border:#243167;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{
+    font-family:'Inter',system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;
+    color:var(--ink);
+    background:linear-gradient(-45deg,#020024,#090979,#00d4ff,#001f3f);
+    background-size:400% 400%;
+    animation:gradientShift 12s ease infinite;
+    overflow-x:hidden;
+  }
+  @keyframes gradientShift{
+    0%{background-position:0% 50%}
+    50%{background-position:100% 50%}
+    100%{background-position:0% 50%}
+  }
 
-*{box-sizing:border-box;margin:0;padding:0}
-html,body{
-height:100%;width:100%;overflow-x:hidden;
-color:var(--ink);font-family:'Inter',sans-serif;
-scroll-behavior:smooth;
-background:#000;
-}
+  /* Fullscreen 3D background canvas */
+  #bg-canvas{
+    position:fixed; left:0; top:0; width:100%; height:100%; z-index:0; pointer-events:none;
+    mix-blend-mode:screen; opacity:0.95;
+  }
 
-canvas#bg{
-position:fixed;top:0;left:0;width:100%;height:100%;
-z-index:-2;background:radial-gradient(circle at top left,var(--bg1),var(--bg2),var(--bg3),var(--bg4));
-}
+  .container{
+    max-width:1080px;margin:0 auto;padding:40px 20px 80px;position:relative;z-index:2;
+  }
 
-.container{max-width:1120px;margin:0 auto;padding:40px 20px 100px;position:relative;z-index:1}
+  header{
+    display:grid;grid-template-columns:140px 1fr;gap:24px;align-items:center;margin-top:8px;
+    animation:fadeIn 1s ease forwards;
+  }
+  .avatar{
+    width:140px;height:140px;border-radius:22px;object-fit:cover;border:2px solid var(--border);
+    background:linear-gradient(180deg,rgba(255,255,255,0.03), rgba(0,0,0,0.15));
+    box-shadow:0 10px 30px rgba(0,0,0,.35);
+    display:block;
+  }
+  .intro{
+    display:flex;flex-direction:column;gap:8px;
+  }
+  .title{
+    font-size:38px;font-weight:800;line-height:1.05;
+    display:flex;align-items:center;gap:12px;
+    background:linear-gradient(90deg,var(--c1),var(--c2),var(--c3));
+    -webkit-background-clip:text;color:transparent;
+  }
+  .subtitle{font-size:15px;color:var(--muted)}
+  .contact{display:flex;flex-wrap:wrap;gap:10px;margin-top:10px}
+  .chip{
+    display:inline-flex;align-items:center;gap:8px;background:linear-gradient(90deg,#12204a,#0b1430);
+    border:1px solid var(--border);padding:8px 12px;border-radius:999px;font-size:14px;color:var(--ink);
+    box-shadow:0 6px 18px rgba(37,99,235,.06)
+  }
+  .cta{
+    margin-top:14px;display:inline-block;background:linear-gradient(90deg,var(--c1),var(--c2));
+    padding:12px 16px;border-radius:12px;color:#0b1220;font-weight:800;box-shadow:0 10px 28px rgba(93,169,255,.18);
+    text-decoration:none;
+  }
 
-/* === Header === */
-header{
-display:grid;grid-template-columns:160px 1fr;
-gap:28px;align-items:center;margin-top:30px;
-animation:fadeIn 1s ease forwards;
-}
-.avatar{
-width:160px;height:160px;border-radius:26px;object-fit:cover;
-border:3px solid var(--border);background:#0e1627;
-box-shadow:0 15px 40px rgba(0,0,0,.35);
-transition:transform .8s ease;
-}
-.avatar:hover{transform:rotateY(25deg) rotateX(12deg) scale(1.08)}
+  .skills-ticker{
+    overflow:hidden;white-space:nowrap;background:rgba(255,255,255,0.04);
+    color:#fff;padding:10px 0;margin-top:20px;border-radius:10px;font-size:1rem;font-weight:600;
+    border:1px solid rgba(255,255,255,0.03);
+  }
+  .skills-ticker span{display:inline-block;padding-left:100%;animation:scroll 22s linear infinite}
+  @keyframes scroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
 
-.typewriter{
-overflow:hidden;border-right:.15em solid orange;white-space:nowrap;
-letter-spacing:.08em;animation:typing 3.8s steps(40,end),blink-caret .75s step-end infinite;
-font-size:52px;font-weight:900;line-height:1.2;
-background:linear-gradient(90deg,var(--c1),var(--c2),var(--c3),var(--c4),var(--c5),var(--c6));
--webkit-background-clip:text;color:transparent;
-}
-@keyframes typing{from{width:0}to{width:100%}}
-@keyframes blink-caret{from,to{border-color:transparent}50%{border-color:orange}}
-.subtitle{font-size:20px;color:var(--muted);margin-top:8px}
-.contact{display:flex;flex-wrap:wrap;gap:12px;margin-top:16px}
-.chip{
-display:inline-flex;align-items:center;gap:8px;
-background:linear-gradient(145deg,#1a234e,#0e132d);
-border:1px solid var(--border);padding:10px 14px;border-radius:999px;
-font-size:15px;color:var(--ink);
-box-shadow:0 8px 20px rgba(37,99,235,.25);
-transition:transform .3s ease;
-}
-.chip:hover{transform:scale(1.05)}
-.cta{
-margin-top:20px;display:inline-block;
-background:linear-gradient(90deg,var(--c1),var(--c2),var(--c3));
-padding:14px 20px;border-radius:14px;color:#0b1220;font-weight:800;
-box-shadow:0 14px 34px rgba(93,169,255,.35);
-transition:transform .25s ease;
-}
-.cta:hover{transform:translateY(-3px)}
+  section{margin-top:26px;animation:fadeIn 1s ease forwards}
+  .card{
+    background:linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0));
+    border-radius:18px;padding:22px;position:relative;box-shadow:0 12px 40px rgba(2,6,23,.6);
+    border:1px solid rgba(255,255,255,0.03);
+    transition:transform .35s ease, box-shadow .35s ease;
+    backdrop-filter: blur(6px);
+  }
+  .card:hover{transform:translateY(-6px);box-shadow:0 24px 60px rgba(2,6,23,.75)}
+  .card:before{content:"";position:absolute;inset:-2px;border-radius:20px;z-index:-1;background:linear-gradient(135deg,var(--c1),var(--c2),var(--c3));opacity:.08;filter:saturate(120%)}
 
-/* === Skills Ticker === */
-.skills-ticker{
-overflow:hidden;white-space:nowrap;
-background:rgba(255,255,255,0.08);
-color:#fff;padding:12px 0;margin-top:26px;border-radius:12px;
-font-size:1rem;font-weight:600;letter-spacing:.5px;
-box-shadow:inset 0 0 20px rgba(0,0,0,.3);
-}
-.skills-ticker span{
-display:inline-block;padding-left:100%;
-animation:scroll 30s linear infinite;
-}
-@keyframes scroll{0%{transform:translateX(0)}100%{transform:translateX(-100%)}}
+  h2{font-size:20px;margin:0 0 12px;font-weight:800;}
+  p, li{color:var(--muted);line-height:1.55}
+  .muted{color:var(--muted);font-size:13px;margin-top:6px}
+  .grid{display:grid;gap:16px}
+  .grid.cols-2{grid-template-columns:1fr 1fr}
+  @media(max-width:880px){header{grid-template-columns:1fr}.grid.cols-2{grid-template-columns:1fr}}
 
-/* === Cards + 3D Hover === */
-section{margin-top:34px;animation:fadeIn 1s ease forwards}
-.card{
-background:linear-gradient(180deg,rgba(255,255,255,0.05),rgba(255,255,255,0));
-border-radius:22px;padding:28px;position:relative;
-box-shadow:0 14px 40px rgba(0,0,0,.35);
-transition:transform 0.5s ease, box-shadow 0.5s ease;
-transform-style:preserve-3d;
-}
-.card:hover{
-transform:rotateY(5deg) rotateX(4deg) scale(1.03);
-box-shadow:0 22px 50px rgba(0,0,0,.55);
-}
-.card:before{
-content:"";position:absolute;inset:-3px;border-radius:24px;z-index:-1;
-background:linear-gradient(135deg,var(--c1),var(--c2),var(--c3),var(--c4));
-opacity:.4;filter:saturate(130%);
-}
-h2{font-size:24px;margin:0 0 16px;font-weight:800;}
-h2:after{content:"";display:block;height:3px;width:100px;margin-top:10px;border-radius:3px;
-background:linear-gradient(90deg,var(--c2),var(--c3),transparent)}
-.grid{display:grid;gap:18px}
-.grid.cols-2{grid-template-columns:1fr 1fr}
-@media(max-width:880px){header{grid-template-columns:1fr}.grid.cols-2{grid-template-columns:1fr}}
+  .skill-icons{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+  .skill-icons i{font-size:28px;filter:drop-shadow(0 6px 12px rgba(0,0,0,.35))}
+  .list{display:grid;gap:12px}
+  .item{padding:14px;border-radius:12px;border:1px solid rgba(255,255,255,0.03);background:linear-gradient(180deg,#0b1230,#06102a)}
+  footer{margin-top:40px;color:var(--muted);font-size:13px;text-align:center}
 
-.list{display:grid;gap:16px}
-.item{padding:18px;border-radius:18px;border:1px solid #1b2653;
-background:linear-gradient(180deg,#0f1733 0%, #0b122b 100%)}
-.skill-icons{display:flex;flex-wrap:wrap;gap:18px;justify-content:center}
-.skill-icons i{font-size:34px;filter:drop-shadow(0 8px 14px rgba(0,0,0,.4))}
+  /* Project carousel simplified (auto-scroll) */
+  .carousel{display:flex;overflow:hidden;position:relative;margin-top:8px}
+  .carousel-track{display:flex;animation:slide 35s linear infinite}
+  .carousel .item{min-width:320px;margin-right:16px;flex-shrink:0}
+  @keyframes slide{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
 
-footer{margin-top:50px;color:var(--muted);font-size:14px;text-align:center}
+  /* small utilities */
+  .meta{font-size:13px;color:var(--muted)}
+  .tag{display:inline-block;padding:6px 10px;border-radius:999px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.02);font-size:13px;margin-right:8px}
 
-@keyframes fadeIn{to{opacity:1;transform:translateY(0)}}
-
-/* === Project Carousel === */
-.carousel{display:flex;overflow:hidden;position:relative}
-.carousel-track{display:flex;animation:slide 35s linear infinite;}
-.carousel .item{min-width:320px;margin-right:18px;flex-shrink:0;}
-@keyframes slide{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
 </style>
 </head>
-
 <body>
-<canvas id="bg"></canvas> <!-- Background canvas for particles -->
+<!-- 3D background canvas -->
+<canvas id="bg-canvas"></canvas>
 
 <div class="container">
-<header>
-<img class="avatar" src="kusuma_photo.png" alt="Kusuma profile photo" />
-<div>
-<h1 class="typewriter">Hi, I'm Kusuma Challa 👋</h1>
-<div class="subtitle">Data Engineer · Data Pipelines & Cloud Analytics · Python · SQL · AWS · Machine Learning</div>
-<div class="contact">
-<span class="chip">📧 kusumachalla79@gmail.com</span>
-<a class="chip" href="https://www.linkedin.com/in/kusuma-challa" target="_blank">🔗 linkedin.com/in/kusuma-challa</a>
-<span class="chip">📞 +44 7554 859972</span>
-</div>
-<a class="cta" href="#projects">View Featured Projects ↓</a>
-</div>
-</header>
+  <header>
+    <img class="avatar" src="kusuma_photo.png" alt="Kusuma profile photo" />
+    <div class="intro">
+      <div class="title">Hi — I'm <span style="margin-left:6px">Kusuma Challa</span> <span style="font-size:22px">👩‍💻</span></div>
+      <div class="subtitle">Data Engineer · ETL · Pipelines · Cloud Analytics · ML integration</div>
 
-<div class="skills-ticker">
-<span>Python · SQL · Data Engineering · ETL Pipelines · Apache Airflow · AWS · Power BI · Tableau · TensorFlow · Pandas · NumPy · Scikit-learn · PostgreSQL · Cloud Data Warehouses · Big Data · Predictive Analytics</span>
-</div>
+      <div class="contact">
+        <span class="chip">📧 kusumachalla79@gmail.com</span>
+        <a class="chip" href="https://www.linkedin.com/in/kusuma-challa" target="_blank" rel="noopener">🔗 linkedin.com/in/kusuma-challa</a>
+        <span class="chip">📞 +44 7554 859972</span>
+      </div>
 
-<section class="card" id="about">
-<h2>Professional Summary</h2>
-<p>I’m a Data Engineer with hands-on experience building and managing data pipelines, automating workflows, and developing cloud-based analytics solutions using Python, SQL, and AWS. Skilled in ETL development, data modelling, and machine learning integration, I leverage tools like Apache Airflow, Power BI, and TensorFlow to streamline processes and deliver meaningful business insights. Passionate about creating scalable, reliable systems that drive real business value.</p>
-</section>
+      <a class="cta" href="#projects">View Featured Projects ↓</a>
+    </div>
+  </header>
 
-<!-- (Rest of your sections: Skills, Certifications, Experience, Projects, Education remain same as before) -->
+  <div class="skills-ticker" aria-hidden="true">
+    <span>Python · SQL · Apache Airflow · ETL · AWS (S3, Lambda, Glue) · Power BI · Tableau · TensorFlow · Pandas · NumPy · XGBoost · Data Warehousing · Data Modelling · Data Pipelines · Cloud Analytics</span>
+  </div>
 
-<footer>Designed with ♥ and hosted on GitHub Pages © <span id="year"></span> Kusuma Challa</footer>
+  <section class="card" id="about">
+    <h2>Professional Summary</h2>
+    <p>
+      Data Engineer with hands-on experience building and managing ETL pipelines, automating workflows, and developing cloud-based analytics solutions using Python, SQL and AWS.
+      I turn raw, complex data into meaningful, production-ready pipelines and dashboards that drive business decisions. Practical experience with Airflow, Power BI, TensorFlow and data modelling.
+    </p>
+  </section>
+
+  <section class="grid cols-2" aria-labelledby="skills-title">
+    <div class="card">
+      <h2 id="skills-title">Technical Skills</h2>
+      <div class="skill-icons" aria-hidden="false">
+        <i class="devicon-python-plain" title="Python"></i>
+        <i class="devicon-sqlite-plain" title="SQL"></i>
+        <i class="devicon-amazonwebservices-plain-wordmark" title="AWS"></i>
+        <i class="devicon-pandas-original" title="Pandas"></i>
+        <i class="devicon-numpy-original" title="NumPy"></i>
+        <i class="devicon-tensorflow-original" title="TensorFlow"></i>
+        <i class="devicon-git-plain" title="Git"></i>
+        <i class="devicon-mysql-plain" title="MySQL"></i>
+        <i class="devicon-tableau-plain" title="Tableau"></i>
+        <i class="devicon-powerbi-plain" title="Power BI"></i>
+      </div>
+
+      <div style="margin-top:12px" class="meta">
+        <span class="tag">ETL / Airflow</span>
+        <span class="tag">Data Warehousing</span>
+        <span class="tag">Cloud (AWS)</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Certifications & Tools</h2>
+      <ul class="list" style="margin-top:8px">
+        <li>ETL & Data Pipeline Development (Apache Airflow) · Hands-on</li>
+        <li>Power BI & Dashboard Reporting</li>
+        <li>Oracle / MySQL / PostgreSQL — SQL</li>
+        <li>AWS (S3, Lambda, Glue, EC2) — Cloud Analytics</li>
+        <li>TensorFlow & Scikit-learn — ML model integration</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="card" id="experience">
+    <h2>Professional Experience</h2>
+
+    <div class="list" style="margin-top:10px">
+      <div class="item">
+        <h4>Data Analyst / Process Associate · Nimble Property</h4>
+        <div class="muted">Remote · New York · Jun 2023 – Jun 2024</div>
+        <ul>
+          <li>Built automated ETL and reporting workflows using Python & SQL to clean and transform hospitality datasets.</li>
+          <li>Improved data accuracy and reporting cadence; created dashboards for operational decision-making (Power BI).</li>
+          <li>Identified and resolved data inconsistencies and implemented validation steps in pipelines.</li>
+        </ul>
+      </div>
+
+      <div class="item">
+        <h4>Data Analyst Intern · COAPPS Healthcare Data Navigation</h4>
+        <div class="muted">Remote · Mar 2024 – May 2024</div>
+        <ul>
+          <li>Processed healthcare & genomic datasets; implemented preprocessing and modelling pipelines using Python and TensorFlow.</li>
+          <li>Ran EDA and statistical analysis to support clinical research insights and model training.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Projects -->
+  <section class="card" id="projects">
+    <h2>Featured Projects</h2>
+    <div class="carousel" aria-hidden="false">
+      <div class="carousel-track">
+        <div class="item card">
+          <h4>Time Series Forecasting — Supplement Industry</h4>
+          <div class="muted">SARIMA · Prophet · LSTM · XGBoost</div>
+          <p>Built LSTM and hybrid models on multi-year weekly sales (4,000+ records), reducing MAPE and improving inventory predictions. Visualised results in dashboards to influence purchasing strategy.</p>
+        </div>
+
+        <div class="item card">
+          <h4>COVID-19 Mortality Study (UK & Ontario)</h4>
+          <div class="muted">R · SQL · ggplot2</div>
+          <p>Analysed population- and region-level datasets to investigate socio-economic and healthcare access drivers in mortality trends. Delivered reproducible reports and visualisations.</p>
+        </div>
+
+        <div class="item card">
+          <h4>Credit Risk Prediction</h4>
+          <div class="muted">Logistic Regression · Random Forest · XGBoost</div>
+          <p>Engineered features and compared models to classify credit risk, optimised for fewer false negatives to improve risk mitigation strategies.</p>
+        </div>
+
+        <div class="item card">
+          <h4>Alzheimer’s Detection from MRI</h4>
+          <div class="muted">CNN · TensorFlow</div>
+          <p>Preprocessed MRI scans and trained CNN models with additional denoising and transform steps to detect early-stage Alzheimer's features.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="grid cols-2">
+    <div class="card">
+      <h2>Education</h2>
+      <div class="list">
+        <div class="item">
+          <h4>MSc Data Science</h4>
+          <div class="muted">University of East London · Sep 2024 – Sep 2025</div>
+        </div>
+        <div class="item">
+          <h4>B.Tech in Computer Science</h4>
+          <div class="muted">JNTUH College of Engineering · Jun 2020 – Jun 2024</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Extras</h2>
+      <ul class="list">
+        <li>Strong communication & presentation skills — transforming technical outputs into business insights.</li>
+        <li>Open to roles in Data Engineering, ML Ops, and Cloud Analytics.</li>
+      </ul>
+    </div>
+  </section>
+
+  <footer>Designed with ♥ and hosted on GitHub Pages © <span id="year"></span> Kusuma Challa</footer>
 </div>
 
 <script>
-document.getElementById('year').textContent = new Date().getFullYear();
+  // set year
+  document.getElementById('year').textContent = new Date().getFullYear();
 
-/* === Particle Background === */
-const canvas = document.getElementById("bg");
-const ctx = canvas.getContext("2d");
-let particles = [];
-let w,h;
+  /* ===========================
+     Three.js: 3D interactive floating icons (sprites)
+     =========================== */
+  (function(){
+    const canvas = document.getElementById('bg-canvas');
+    const renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setSize(window.innerWidth, window.innerHeight);
 
-function init(){
-  w = canvas.width = window.innerWidth;
-  h = canvas.height = window.innerHeight;
-  particles = [];
-  for(let i=0;i<80;i++){
-    particles.push({
-      x: Math.random()*w,
-      y: Math.random()*h,
-      r: Math.random()*3+1,
-      dx: (Math.random()-0.5)*0.8,
-      dy: (Math.random()-0.5)*0.8,
-      color:`hsl(${Math.random()*360},70%,60%)`
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 1, 4000);
+    camera.position.z = 800;
+
+    // Create several sprite textures from emoji drawn on canvas
+    function createEmojiTexture(emoji, size = 128, bg = 'rgba(0,0,0,0)') {
+      const c = document.createElement('canvas');
+      c.width = size; c.height = size;
+      const ctx = c.getContext('2d');
+      // optional backdrop circle
+      ctx.fillStyle = bg;
+      ctx.fillRect(0,0,size,size);
+      const fontSize = Math.floor(size * 0.6);
+      ctx.font = `${fontSize}px serif`;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillStyle = 'white';
+      ctx.fillText(emoji, size/2, size/2 + (fontSize*0.06));
+      const tex = new THREE.CanvasTexture(c);
+      tex.needsUpdate = true;
+      return tex;
+    }
+
+    // Emoji/icons to use for data-theme. Use emoji for cross-platform lightweight approach.
+    const spritesConfig = [
+      { emoji: '☁️', scale: 80 },
+      { emoji: '🐍', scale: 88 },   // python
+      { emoji: '🗄️', scale: 78 },   // database/filecabinet
+      { emoji: '📊', scale: 78 },   // chart
+      { emoji: '⚙️', scale: 70 },   // gear
+      { emoji: '🧠', scale: 78 },   // AI
+    ];
+
+    // create pool of sprites
+    const sprites = [];
+    const spriteCount = 40; // total sprites in scene
+    for (let i=0;i<spriteCount;i++){
+      const cfg = spritesConfig[i % spritesConfig.length];
+      const texture = createEmojiTexture(cfg.emoji, 128);
+      const material = new THREE.SpriteMaterial({ map: texture, transparent: true, opacity: 0.95 });
+      const sprite = new THREE.Sprite(material);
+      // random position in a large 3D box
+      sprite.position.x = (Math.random() - 0.5) * 2200;
+      sprite.position.y = (Math.random() - 0.5) * 1200;
+      sprite.position.z = (Math.random() - 0.5) * 1600;
+      const s = (0.7 + Math.random() * 1.8) * (cfg.scale / 100);
+      sprite.scale.set(s * cfg.scale, s * cfg.scale, 1);
+      sprite.userData = {
+        velocity: {
+          x: (Math.random() - 0.5) * 0.3,
+          y: (Math.random() - 0.5) * 0.3,
+          z: (Math.random() - 0.5) * 0.3
+        },
+        rotSpeed: (Math.random() - 0.5) * 0.002
+      };
+      scene.add(sprite);
+      sprites.push(sprite);
+    }
+
+    // subtle ambient light (not strictly needed for sprites but keeps scene coherent)
+    const ambient = new THREE.AmbientLight(0xffffff, 0.6);
+    scene.add(ambient);
+
+    // mouse interaction variables (for parallax)
+    let mouseX = 0, mouseY = 0;
+    let targetX = 0, targetY = 0;
+
+    document.addEventListener('mousemove', (e) => {
+      mouseX = (e.clientX - window.innerWidth / 2);
+      mouseY = (e.clientY - window.innerHeight / 2);
     });
-  }
-}
-function animate(){
-  ctx.clearRect(0,0,w,h);
-  for(let p of particles){
-    ctx.beginPath();
-    ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
-    ctx.fillStyle=p.color;
-    ctx.fill();
-    p.x+=p.dx; p.y+=p.dy;
-    if(p.x<0||p.x>w) p.dx*=-1;
-    if(p.y<0||p.y>h) p.dy*=-1;
-  }
-  requestAnimationFrame(animate);
-}
-window.addEventListener("resize",init);
-init();animate();
+
+    // touch support
+    document.addEventListener('touchmove', (e) => {
+      if (e.touches && e.touches.length) {
+        mouseX = (e.touches[0].clientX - window.innerWidth / 2);
+        mouseY = (e.touches[0].clientY - window.innerHeight / 2);
+      }
+    }, {passive:true});
+
+    // animation loop
+    function animate() {
+      requestAnimationFrame(animate);
+
+      // subtle parallax to camera based on mouse
+      targetX += (mouseX - targetX) * 0.0025;
+      targetY += (mouseY - targetY) * 0.0025;
+      camera.position.x = targetX * 0.07;
+      camera.position.y = -targetY * 0.07;
+
+      // move sprites slowly
+      for (let s of sprites){
+        s.position.x += s.userData.velocity.x;
+        s.position.y += s.userData.velocity.y;
+        s.position.z += s.userData.velocity.z;
+
+        // gentle rotation sim via scale/position jitter
+        s.material.rotation += s.userData.rotSpeed;
+
+        // wrap-around bounds
+        const boundX = 1200, boundY = 700, boundZ = 1200;
+        if (s.position.x > boundX) s.position.x = -boundX;
+        if (s.position.x < -boundX) s.position.x = boundX;
+        if (s.position.y > boundY) s.position.y = -boundY;
+        if (s.position.y < -boundY) s.position.y = boundY;
+        if (s.position.z > boundZ) s.position.z = -boundZ;
+        if (s.position.z < -boundZ) s.position.z = boundZ;
+      }
+
+      renderer.render(scene, camera);
+    }
+
+    animate();
+
+    // handle resize
+    function onResize(){
+      const w = window.innerWidth;
+      const h = window.innerHeight;
+      renderer.setSize(w, h);
+      camera.aspect = w / h;
+      camera.updateProjectionMatrix();
+    }
+    window.addEventListener('resize', onResize);
+
+    /* Optionally: pause animation when tab hidden to save CPU */
+    document.addEventListener('visibilitychange', function(){
+      if (document.hidden){
+        renderer.domElement.style.opacity = 0.7;
+      } else {
+        renderer.domElement.style.opacity = 0.95;
+      }
+    });
+
+  })();
 </script>
 </body>
 </html>
